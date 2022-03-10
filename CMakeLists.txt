@@ -46,7 +46,7 @@ add_executable(RdkTests
         source/util/ScopedAtomicCounter.test.cpp
         source/util/CountedGuard.test.cpp
         )
-
+target_include_directories(RdkTests PRIVATE lib)
 target_compile_definitions(RdkTests PUBLIC CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS=1)
 
-target_link_libraries(RdkTests rdk Catch2)
+target_link_libraries(RdkTests rdk)

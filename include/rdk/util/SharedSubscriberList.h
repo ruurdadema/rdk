@@ -29,7 +29,7 @@ public:
         return {};
     }
 
-    void call (const std::function<void (Type&)>& cb)
+    void call (const std::function<void (Type&)>& cb) const
     {
         if (!cb)
             return;

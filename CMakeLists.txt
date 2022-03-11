@@ -26,6 +26,7 @@ target_sources(rdk PUBLIC
         include/rdk/util/Result.h
         include/rdk/util/SharedSubscriberList.h
         include/rdk/util/CountedGuard.h
+        include/rdk/util/TaskScheduler.h
         include/rdk/detail/NonCopyable.h
 
         # source/

@@ -64,4 +64,25 @@ private:
     explicit Result (std::string value) noexcept : mErrorMessage (std::move (value)) {}
 };
 
+/**
+ * Small convenience method to allow writing rdk::ok() instead of rdk::Result::ok().
+ * It's for the lazy people like myself.
+ * @return Result indicating failure or success.
+ */
+inline Result ok()
+{
+    return Result::ok();
+}
+
+/**
+ * Small convenience method for allowing writing rdk::error() instead of rdk::Result::error().
+ * It's for the lazy people like myself.
+ * @param errorMessage Message describing the error.
+ * @return Result indicating failure or success.
+ */
+inline Result error (const std::string& errorMessage)
+{
+    return Result::error (errorMessage);
+}
+
 } // namespace rdk

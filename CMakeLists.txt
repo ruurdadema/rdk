@@ -28,6 +28,7 @@ target_sources(rdk PUBLIC
         include/rdk/util/CountedGuard.h
         include/rdk/util/TaskScheduler.h
         include/rdk/detail/NonCopyable.h
+        include/rdk/events/ValuePublisher.h
 
         # source/
         source/string/StringUtilities.cpp

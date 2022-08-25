@@ -19,7 +19,7 @@ TEST_CASE ("ScopedGuard default constructor", "[ScopedGuard]")
         auto a = counter.getGuard();
         REQUIRE (counter.getCount() == 1);
 
-        auto b = a;
+        auto b = a; // NOLINT
         REQUIRE (counter.getCount() == 2);
     }
     REQUIRE (counter.getCount() == 0);
@@ -35,7 +35,7 @@ TEST_CASE ("ScopedGuard copy constructor", "[ScopedGuard]")
 
         REQUIRE (counter.getCount() == 1);
         {
-            auto b = a;
+            auto b = a; // NOLINT
             REQUIRE (counter.getCount() == 2);
         }
         REQUIRE (counter.getCount() == 1);
@@ -135,7 +135,7 @@ TEST_CASE ("ScopedGuard copy assignment", "[ScopedGuard]")
 
         REQUIRE (counter.getCount() == 1);
         {
-            auto b = a;
+            auto b = a; // NOLINT
 
             REQUIRE (counter.getCount() == 2);
         }

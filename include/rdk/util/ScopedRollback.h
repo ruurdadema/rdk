@@ -22,7 +22,7 @@ public:
     ScopedRollback() = default;
 
     /**
-     * Constuctor.
+     * Constructor.
      * @param initialFunctionToRollback Function to execute on rollback.
      */
     explicit ScopedRollback (std::function<void()>&& initialFunctionToRollback)

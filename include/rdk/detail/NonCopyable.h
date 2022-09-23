@@ -5,6 +5,9 @@
 
 #pragma once
 
+namespace rdk
+{
+
 class NonCopyable
 {
 public:
@@ -15,3 +18,5 @@ protected:
     NonCopyable() = default;
     ~NonCopyable() = default;
 };
+
+} // namespace rdk

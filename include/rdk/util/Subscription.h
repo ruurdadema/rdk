@@ -21,7 +21,6 @@ public:
     }
 
     Subscription (const Subscription& other) = delete;
-
     Subscription (Subscription&& other) noexcept { *this = std::move (other); }
 
     ~Subscription()

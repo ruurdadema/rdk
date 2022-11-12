@@ -14,6 +14,14 @@ namespace rdk
 {
 
 /**
+ * Tests whether given text starts with a certain string.
+ * @param text The text to test.
+ * @param start
+ * @return
+ */
+bool startsWith (std::string_view text, std::string_view start);
+
+/**
  * Returns a string truncated up to the first occurrence of a needle.
  * @param stringToSearchIn String to search in.
  * @param stringToSearchFor String to search for.
@@ -111,7 +119,8 @@ bool removeSuffix (std::string_view& string, std::string_view suffixToRemove);
  * @param string String to convert to a value.
  * @return The converted value as optional, which will contain a value on success or will be empty on failure.
  */
-template <typename Type> std::optional<Type> fromString (std::string_view string)
+template <typename Type>
+std::optional<Type> fromString (std::string_view string)
 {
     Type result {};
     auto [p, ec] = std::from_chars (string.data(), string.data() + string.size(), result);
@@ -127,7 +136,8 @@ template <typename Type> std::optional<Type> fromString (std::string_view string
  * @param string String to convert to a value.
  * @return The converted value as optional, which will contain a value on success or will be empty on failure.
  */
-template <typename Type> std::optional<Type> fromStringStrict (std::string_view string)
+template <typename Type>
+std::optional<Type> fromStringStrict (std::string_view string)
 {
     Type result {};
     auto [p, ec] = std::from_chars (string.data(), string.data() + string.size(), result);

@@ -12,6 +12,11 @@ extern "C"
 #include "../lib/natsort/strnatcmp.h"
 }
 
+bool rdk::startsWith (std::string_view text, std::string_view start)
+{
+    return text.rfind (start, 0) == 0;
+}
+
 std::string_view rdk::upToFirstOccurrenceOf (
     std::string_view stringToSearchIn,
     std::string_view stringToSearchFor,

@@ -79,4 +79,6 @@ private:
     std::function<void()> mOnDestructionCallback;
 };
 
+using Defer = Subscription;
+
 } // namespace

@@ -20,6 +20,11 @@ template <class Type>
 class SharedSubscriberList
 {
 public:
+    SharedSubscriberList() = default;
+
+    RDK_DECLARE_NON_COPYABLE(SharedSubscriberList)
+    RDK_DECLARE_NON_MOVEABLE(SharedSubscriberList)
+
     /**
      * Adds given subscriber to the list.
      * @param subscriber Subscriber to add.
@@ -59,6 +64,34 @@ public:
     [[nodiscard]] size_t getNumSubscribers() const
     {
         return mSharedList->size();
+    }
+
+    /**
+     * Tests whether given subscriber is part of the internal list.
+     * @param subscriber The susbcriber to test.
+     * @return True if given subscriber is part of the list, or false if not.
+     */
+    bool hasSubscriber (Type* subscriber) const
+    {
+        return std::any_of (mSharedList->begin(), mSharedList->end(), [subscriber] (Type* element) {
+            return element == subscriber;
+        });
+    }
+
+    /**
+     * @return Iterator to the beginning of the vector.
+     */
+    typename std::vector<Type*>::iterator begin()
+    {
+        return mSharedList->begin();
+    }
+
+    /**
+     * @return Iterator to the end of the vector.
+     */
+    typename std::vector<Type*>::iterator end()
+    {
+        return mSharedList->end();
     }
 
 private:

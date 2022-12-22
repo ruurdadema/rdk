@@ -35,12 +35,12 @@ public:
     /**
      * Returns true if this Result indicates success, or false otherwise.
      */
-    bool isOk() { return mErrorMessage.empty(); }
+    [[nodiscard]] bool isOk() const { return mErrorMessage.empty(); }
 
     /**
      * Returns true if this Result contains a non-empty error message, or false otherwise.
      */
-    bool hasError() { return !mErrorMessage.empty(); }
+    [[nodiscard]] bool hasError() const { return !mErrorMessage.empty(); }
 
     /**
      * Returns true if this Result indicates success, or false otherwise. Same as isOk().

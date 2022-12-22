@@ -12,6 +12,8 @@ namespace rdk
 
 /**
  * Little class which deliberately leaks a dynamically instantiated object of Type
+ * You probably shouldn't use this, obviously, but in certain rare cases it can be helpful to leak memory. When that is
+ * the case it is better to make clear that this is intentional by using this class.
  * @tparam T
  */
 template <class T>

@@ -5,8 +5,22 @@
 
 #pragma once
 
-#include <type_traits>
 #include <numeric>
+#include <type_traits>
+
+/**
+ * Shortcut for declaring a class non copyable.
+ */
+#define RDK_DECLARE_NON_COPYABLE(className)                                                                            \
+    className (const className&) = delete;                                                                             \
+    className& operator= (const className&) = delete;
+
+/**
+ * Shortcut for declaring a class non moveable.
+ */
+#define RDK_DECLARE_NON_MOVEABLE(className)                                                                            \
+    className (className&&) = delete;                                                                                  \
+    className& operator= (className&&) = delete;
 
 namespace rdk
 {

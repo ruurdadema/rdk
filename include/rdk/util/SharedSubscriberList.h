@@ -8,6 +8,8 @@
 #include "Subscription.h"
 #include "rdk/stl/Vector.h"
 
+#include <memory>
+
 namespace rdk
 {
 

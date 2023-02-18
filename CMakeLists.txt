@@ -44,13 +44,15 @@ target_include_directories(rdk PUBLIC include)
 
 # Unit tests
 
-add_executable(RdkTests
-        source/test/CatchMain.cpp
-        source/string/StringUtilities.test.cpp
-        source/util/ScopedAtomicCounter.test.cpp
-        source/util/CountedGuard.test.cpp
-        )
-target_include_directories(RdkTests PRIVATE lib)
-target_compile_definitions(RdkTests PUBLIC CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS=1)
+option(RDK_UNIT_TESTS "Enable RDK unit tests" OFF)
 
-target_link_libraries(RdkTests rdk)
+if (RDK_UNIT_TESTS)
+    add_executable(RdkTests
+            source/test/CatchMain.cpp
+            source/string/StringUtilities.test.cpp
+            source/util/ScopedAtomicCounter.test.cpp
+            source/util/CountedGuard.test.cpp
+            )
+    target_include_directories(RdkTests PRIVATE lib)
+    target_compile_definitions(RdkTests PUBLIC CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS=1)
+endif ()

@@ -3,7 +3,7 @@
 // Copyright (c) Owllab. All rights reserved.
 //
 
-#include "catch2/catch.hpp"
+#include <catch.hpp>
 
 #include "rdk/util/ScopedAtomicCounter.h"
 

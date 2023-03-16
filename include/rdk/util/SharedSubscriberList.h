@@ -24,8 +24,8 @@ class SharedSubscriberList
 public:
     SharedSubscriberList() = default;
 
-    RDK_DECLARE_NON_COPYABLE(SharedSubscriberList)
-    RDK_DECLARE_NON_MOVEABLE(SharedSubscriberList)
+    RDK_DECLARE_NON_COPYABLE (SharedSubscriberList)
+    RDK_DECLARE_NON_MOVEABLE (SharedSubscriberList)
 
     /**
      * Adds given subscriber to the list.

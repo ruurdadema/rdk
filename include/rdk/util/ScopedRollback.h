@@ -12,7 +12,7 @@ namespace rdk
 {
 
 /**
- * This class gathers one or more functions and executes those on destruction if no call to commit was done before.
+ * This class gathers one or more functions and executes those on destruction if no call to cancel was done before.
  * This class acts as alternative to the 'goto cleanup' paradigm from C, where we want to rollback previous changes if a
  * following change did not succeed. This class is also exception safe.
  */
@@ -53,10 +53,10 @@ public:
     }
 
     /**
-     * Commits all the functions, meaning it will clear all currently stored functions. You'll want to call this
+     * Cancels all the functions, meaning it will clear all currently stored functions. You'll want to call this
      * whenever all operations were successful and nothing need to be rolled back.
      */
-    void commit()
+    void cancel()
     {
         mRollbackFunctions.clear();
     }

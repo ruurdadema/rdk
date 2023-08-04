@@ -57,9 +57,30 @@ template <typename T> const T& getDefaultObjectForType()
  * This function returns a reference to a read/write, default-constructed static object of type T. There will be exactly
  * one of these objects present per instantiated type, per process.
  */
+
 template <typename T> T& getGlobalObjectForType()
 {
     static T _defaultObject;
+    return _defaultObject;
+}
+
+/**
+ * This function returns a reference to a read/write, default-constructed static object of type T. There will be exactly
+ * one of these objects present per instantiated type, per process.
+ */
+template <typename T> T& getGlobalInstanceForType()
+{
+    static T _defaultObject;
+    return _defaultObject;
+}
+
+/**
+ * This function returns a reference to a read-only, default-constructed static object of type T. There will be exactly
+ * one of these objects present per instantiated type, per process.
+ */
+template <typename T> const T& getGlobalConstInstanceForType()
+{
+    const static T _defaultObject;
     return _defaultObject;
 }
 

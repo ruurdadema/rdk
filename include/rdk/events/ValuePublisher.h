@@ -64,6 +64,28 @@ public:
     }
 
     /**
+     * Calls callback which allows caller to update the value.
+     * If no value exists, a new value will created.
+     */
+    void update (const std::function<void (DataType& data)>& callback)
+    {
+        if (!callback)
+            return;
+
+        if (mValue)
+        {
+            callback (*mValue);
+            notifySubscribers();
+        }
+        else
+        {
+            DataType newValue {};
+            callback (newValue);
+            set (std::move (newValue));
+        }
+    }
+
+    /**
      * Clears the value, if there is one.
      */
     void reset()

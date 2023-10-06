@@ -9,7 +9,7 @@ template <class ReturnType, class... ArgTypes> class Callback
 {
 };
 
-template <class ReturnType, class... ArgTypes> class rdk::Callback<ReturnType (ArgTypes...)>
+template <class ReturnType, class... ArgTypes> class Callback<ReturnType (ArgTypes...)>
 {
 public:
     Callback() = default;
@@ -39,7 +39,7 @@ private:
  * Specialise for void return type
  * @tparam ArgTypes
  */
-template <class... ArgTypes> class rdk::Callback<void (ArgTypes...)>
+template <class... ArgTypes> class Callback<void (ArgTypes...)>
 {
 public:
     Callback() = default;

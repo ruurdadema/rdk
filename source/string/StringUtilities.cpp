@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <rdk/string/StringUtilities.h>
 #include <string>
+#include <limits>
 
 extern "C"
 {

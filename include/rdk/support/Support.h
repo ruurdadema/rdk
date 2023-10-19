@@ -27,7 +27,8 @@ namespace rdk
 
 static constexpr size_t InvalidIndex = std::numeric_limits<size_t>::max();
 
-template <class T> static T invalidIndex()
+template <class T>
+static T invalidIndex()
 {
     return std::numeric_limits<T>::max();
 }
@@ -38,7 +39,8 @@ template <class T> static T invalidIndex()
  * @param e The value to convert.
  * @return The underlying value.
  */
-template <typename T> auto toIntegral (T e)
+template <typename T>
+auto toIntegral (T e)
 {
     return static_cast<std::underlying_type_t<T>> (e);
 }
@@ -47,7 +49,8 @@ template <typename T> auto toIntegral (T e)
  * This function returns a reference to a read-only, default-constructed static object of type T. There will be exactly
  * one of these objects present per instantiated type, per process.
  */
-template <typename T> const T& getDefaultObjectForType()
+template <typename T>
+const T& getDefaultObjectForType()
 {
     const static T _defaultObject;
     return _defaultObject;
@@ -58,7 +61,8 @@ template <typename T> const T& getDefaultObjectForType()
  * one of these objects present per instantiated type, per process.
  */
 
-template <typename T> T& getGlobalObjectForType()
+template <typename T>
+T& getGlobalObjectForType()
 {
     static T _defaultObject;
     return _defaultObject;
@@ -68,7 +72,8 @@ template <typename T> T& getGlobalObjectForType()
  * This function returns a reference to a read/write, default-constructed static object of type T. There will be exactly
  * one of these objects present per instantiated type, per process.
  */
-template <typename T> T& getGlobalInstanceForType()
+template <typename T>
+T& getGlobalInstanceForType()
 {
     static T _defaultObject;
     return _defaultObject;
@@ -78,7 +83,8 @@ template <typename T> T& getGlobalInstanceForType()
  * This function returns a reference to a read-only, default-constructed static object of type T. There will be exactly
  * one of these objects present per instantiated type, per process.
  */
-template <typename T> const T& getGlobalConstInstanceForType()
+template <typename T>
+const T& getGlobalConstInstanceForType()
 {
     const static T _defaultObject;
     return _defaultObject;
@@ -91,7 +97,8 @@ template <typename T> const T& getGlobalConstInstanceForType()
  * @param newValue New value to assign to the value to update.
  * @return True if the value changed, or false if not.
  */
-template <class T> bool update (T& valueToUpdate, const T& newValue)
+template <class T, typename = std::enable_if_t<!std::is_floating_point<T>::value>>
+bool update (T& valueToUpdate, const T& newValue)
 {
     if (valueToUpdate != newValue)
     {

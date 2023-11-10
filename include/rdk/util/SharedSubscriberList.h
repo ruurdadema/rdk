@@ -9,6 +9,7 @@
 #include "rdk/stl/Vector.h"
 
 #include <memory>
+#include <algorithm>
 
 namespace rdk
 {

@@ -4,16 +4,10 @@ project(rdk)
 
 set(CMAKE_CXX_STANDARD 17)
 
-if (NOT CMAKE_BUILD_TYPE)
-    # CMAKE_BUILD_TYPE has to be specified for Conan to produce valid output (ie. CONAN_INCLUDE_DIRS)
-    set(CMAKE_BUILD_TYPE Debug)
-    message(WARNING "CMAKE_BUILD_TYPE not specified, set it to 'Debug'")
-endif ()
-
 # RDK Library
 
-add_library(rdk)
-target_sources(rdk PUBLIC
+add_library(rdk INTERFACE)
+target_sources(rdk INTERFACE
         # include/
         include/rdk/stl/Generic.h
         include/rdk/stl/Vector.h
@@ -39,21 +33,22 @@ target_sources(rdk PUBLIC
         # lib/
         lib/natsort/strnatcmp.h
         lib/natsort/strnatcmp.c
-        )
+)
 
-target_include_directories(rdk PUBLIC include)
+target_include_directories(rdk INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Unit tests
 
-option(RDK_UNIT_TESTS "Enable RDK unit tests" OFF)
+option(RDK_WITH_UNIT_TESTS "Enable RDK unit tests" ON)
 
-if (RDK_UNIT_TESTS)
+if (RDK_WITH_UNIT_TESTS)
+    file(GLOB_RECURSE TEST_SOURCES source/*.test.cpp)
+
     add_executable(RdkTests
             source/test/CatchMain.cpp
-            source/string/StringUtilities.test.cpp
-            source/util/ScopedAtomicCounter.test.cpp
-            source/util/CountedGuard.test.cpp
-            )
+            ${TEST_SOURCES}
+    )
     target_include_directories(RdkTests PRIVATE lib)
     target_compile_definitions(RdkTests PUBLIC CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS=1)
+    target_link_libraries(RdkTests PUBLIC rdk)
 endif ()

@@ -38,14 +38,24 @@ public:
         if (subscriber == nullptr)
             return {};
 
-        if (rdk::addIfNotAlreadyThere (*mSharedList, subscriber))
+        // Find an existing entry for subscriber.
+        for (auto& s : *mSubscribers)
         {
-            return Subscription ([sharedList { mSharedList }, subscriber] {
-                rdk::remove (*sharedList, subscriber);
-            });
+            if (s.subscriber == subscriber)
+            {
+                s.count += 1;
+                return rdk::Subscription ([subscribers = mSubscribers, subscriber] {
+                    SharedSubscriberList::unsubscribe (subscribers, subscriber);
+                });
+            }
         }
 
-        return {};
+        // No existing entry was found, so create a new one.
+        mSubscribers->push_back (SubscriberAndCount { subscriber, 1 });
+
+        return rdk::Subscription ([subscribers = mSubscribers, subscriber] {
+            SharedSubscriberList::unsubscribe (subscribers, subscriber);
+        });
     }
 
     /**
@@ -57,8 +67,8 @@ public:
         if (!cb)
             return;
 
-        for (auto* s : *mSharedList)
-            cb (*s);
+        for (auto& s : *mSubscribers)
+            cb (*s.subscriber);
     }
 
     /**
@@ -66,7 +76,7 @@ public:
      */
     [[nodiscard]] size_t getNumSubscribers() const
     {
-        return mSharedList->size();
+        return mSubscribers->size();
     }
 
     /**
@@ -76,8 +86,8 @@ public:
      */
     bool hasSubscriber (Type* subscriber) const
     {
-        return std::any_of (mSharedList->begin(), mSharedList->end(), [subscriber] (Type* element) {
-            return element == subscriber;
+        return std::any_of (mSubscribers->begin(), mSubscribers->end(), [subscriber] (SubscriberAndCount& element) {
+            return element.subscriber == subscriber;
         });
     }
 
@@ -86,7 +96,7 @@ public:
      */
     typename std::vector<Type*>::iterator begin()
     {
-        return mSharedList->begin();
+        return mSubscribers->begin();
     }
 
     /**
@@ -94,11 +104,36 @@ public:
      */
     typename std::vector<Type*>::iterator end()
     {
-        return mSharedList->end();
+        return mSubscribers->end();
     }
 
 private:
-    std::shared_ptr<std::vector<Type*>> mSharedList { std::make_shared<std::vector<Type*>>() };
+    struct SubscriberAndCount
+    {
+        Type* subscriber;
+        size_t count;
+    };
+
+    std::shared_ptr<std::vector<SubscriberAndCount>> mSubscribers { std::make_shared<std::vector<SubscriberAndCount>>() };
+
+    static void unsubscribe (const std::shared_ptr<std::vector<SubscriberAndCount>>& subscribers, Type* subscriberToRemove)
+    {
+        subscribers->erase (
+            std::remove_if (
+                subscribers->begin(),
+                subscribers->end(),
+                [subscriberToRemove] (SubscriberAndCount& sc) {
+                    if (sc.subscriber == subscriberToRemove)
+                    {
+                        if (sc.count <= 1)
+                            return true;
+                        else
+                            sc.count--;
+                    }
+                    return false;
+                }),
+            subscribers->end());
+    }
 };
 
 } // namespace rdk

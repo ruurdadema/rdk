@@ -18,7 +18,7 @@ target_sources(rdk INTERFACE
         include/rdk/util/Callback.h
         include/rdk/util/Subscription.h
         include/rdk/util/Result.h
-        include/rdk/util/SharedSubscriberList.h
+        include/rdk/util/SubscriberList.h
         include/rdk/util/CountedGuard.h
         include/rdk/util/TaskScheduler.h
         include/rdk/util/ScopedRollback.h

@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "rdk/util/SharedSubscriberList.h"
+#include "rdk/util/SubscriberList.h"
 #include <optional>
 
 namespace rdk
@@ -118,7 +118,7 @@ public:
 
 private:
     std::optional<DataType> mValue {};
-    rdk::SharedSubscriberList<Subscriber> mSubscriberList;
+    rdk::SubscriberList<Subscriber> mSubscriberList;
 
     void notifySubscribers()
     {

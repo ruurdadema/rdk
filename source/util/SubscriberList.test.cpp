@@ -6,14 +6,14 @@
 #include <catch2/catch.hpp>
 #include <utility>
 
-#include "rdk/util/SharedSubscriberList.h"
+#include "rdk/util/SubscriberList.h"
 
 class LambdaSubscriber
 {
 public:
     explicit LambdaSubscriber (std::function<void()> func) : mFunction (std::move (func)) {}
 
-    void subscribeToSubscriberList (rdk::SharedSubscriberList<LambdaSubscriber>& list)
+    void subscribeToSubscriberList (rdk::SubscriberList<LambdaSubscriber>& list)
     {
         mSubscription = list.subscribe (this);
     }
@@ -36,7 +36,7 @@ private:
 
 TEST_CASE ("", "[SharedSubscriberList]")
 {
-    rdk::SharedSubscriberList<LambdaSubscriber> subscribers;
+    rdk::SubscriberList<LambdaSubscriber> subscribers;
 
     std::vector<std::string> callbacks;
 

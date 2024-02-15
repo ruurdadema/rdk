@@ -20,13 +20,13 @@ namespace rdk
  * @tparam Type The type of the subscriber.
  */
 template <class Type>
-class SharedSubscriberList
+class SubscriberList
 {
 public:
-    SharedSubscriberList() = default;
+    SubscriberList() = default;
 
-    RDK_DECLARE_NON_COPYABLE (SharedSubscriberList)
-    RDK_DECLARE_NON_MOVEABLE (SharedSubscriberList)
+    RDK_DECLARE_NON_COPYABLE (SubscriberList)
+    RDK_DECLARE_NON_MOVEABLE (SubscriberList)
 
     /**
      * Adds given subscriber to the list.
@@ -45,7 +45,7 @@ public:
             {
                 s.count += 1;
                 return rdk::Subscription ([subscribers = mSubscribers, subscriber] {
-                    SharedSubscriberList::unsubscribe (subscribers, subscriber);
+                    SubscriberList::unsubscribe (subscribers, subscriber);
                 });
             }
         }
@@ -54,7 +54,7 @@ public:
         mSubscribers->push_back (SubscriberAndCount { subscriber, 1 });
 
         return rdk::Subscription ([subscribers = mSubscribers, subscriber] {
-            SharedSubscriberList::unsubscribe (subscribers, subscriber);
+            SubscriberList::unsubscribe (subscribers, subscriber);
         });
     }
 

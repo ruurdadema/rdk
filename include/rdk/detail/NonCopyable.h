@@ -5,6 +5,13 @@
 
 #pragma once
 
+/**
+ * Shortcut for declaring a class non copyable.
+ */
+#define RDK_DECLARE_NON_COPYABLE(className)                                                                            \
+    className (const className&) = delete;                                                                             \
+    className& operator= (const className&) = delete;
+
 namespace rdk
 {
 

@@ -179,7 +179,7 @@ int compareNatural (const std::string& lhs, const std::string& rhs, bool caseSen
  */
 struct NumericAwareSortFunctor
 {
-    inline bool operator() (const std::string& lhs, const std::string& rhs)
+    inline bool operator() (const std::string& lhs, const std::string& rhs) const
     {
         return compareNatural (lhs, rhs, false) < 0;
     }

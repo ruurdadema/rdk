@@ -11,7 +11,7 @@ namespace rdk
 {
 
 /**
- * Class which represents a unique id for a class.
+ * Class which represents a process-wide unique id for a class.
  * @tparam ClassType The class type.
  * @tparam IdType The counter type.
  */

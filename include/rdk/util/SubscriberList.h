@@ -6,10 +6,12 @@
 #pragma once
 
 #include "Subscription.h"
-#include "rdk/stl/Vector.h"
+#include "rdk/detail/NonCopyable.h"
+#include "rdk/detail/NonMoveable.h"
+#include "rdk/support/Support.h"
 
-#include <memory>
 #include <algorithm>
+#include <memory>
 
 namespace rdk
 {
@@ -127,8 +129,7 @@ private:
                     {
                         if (sc.count <= 1)
                             return true;
-                        else
-                            sc.count--;
+                        --sc.count;
                     }
                     return false;
                 }),

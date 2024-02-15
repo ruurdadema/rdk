@@ -7,7 +7,6 @@
 
 #include "Subscription.h"
 #include "rdk/detail/NonCopyable.h"
-#include "rdk/util/Callback.h"
 #include <functional>
 
 namespace rdk
@@ -45,7 +44,8 @@ public:
         virtual ~ScopedGuard()
         {
             if (mGuardCounter && --mGuardCounter->mCountedValue == 0)
-                mGuardCounter->onRelease();
+                if (mGuardCounter->onRelease)
+                    mGuardCounter->onRelease();
         }
 
         ScopedGuard& operator= (const ScopedGuard& other)
@@ -73,18 +73,24 @@ public:
     };
 
     /// Called then the guard counter drops to zero.
-    rdk::Callback<void()> onRelease;
+    std::function<void()> onRelease;
 
     /**
      * Increases the counter by one, and returns a ScopedGuard which will decrease the counter by one upon destruction
      * and execute onRelease if the value dropped to 0. Make sure that CountedGuard outlives the returned ScopedGuard.
      */
-    ScopedGuard getGuard() { return ScopedGuard (*this); }
+    ScopedGuard getGuard()
+    {
+        return ScopedGuard (*this);
+    }
 
     /**
      * @return Returns the current amount of guards active.
      */
-    [[nodiscard]] int getCount() const { return mCountedValue; }
+    [[nodiscard]] int getCount() const
+    {
+        return mCountedValue;
+    }
 
 private:
     int mCountedValue = 0;

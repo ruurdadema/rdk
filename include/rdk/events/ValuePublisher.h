@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "rdk/support/Support.h"
 #include "rdk/util/SubscriberList.h"
 #include <optional>
 
@@ -26,6 +27,8 @@ public:
     class Subscriber
     {
     public:
+        virtual ~Subscriber() = default;
+
         virtual void valueUpdated (const std::optional<DataType>& updatedValue) = 0;
 
     protected:
@@ -105,7 +108,7 @@ public:
         if (mValue)
             return *mValue;
 
-        return getDefaultObjectForType<DataType>();
+        return getGlobalConstInstanceForType<DataType>();
     }
 
     /**

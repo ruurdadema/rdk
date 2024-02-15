@@ -24,6 +24,7 @@ public:
     {
         mAtomic = other.mAtomic;
         mPreviousValue = mAtomic.fetch_add (1);
+        return *this;
     }
 
     ScopedAtomicCounter& operator= (ScopedAtomicCounter&&) noexcept = delete;

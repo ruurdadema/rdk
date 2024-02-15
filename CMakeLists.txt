@@ -9,22 +9,17 @@ set(CMAKE_CXX_STANDARD 17)
 add_library(rdk INTERFACE)
 target_sources(rdk INTERFACE
         # include/
-        include/rdk/stl/Generic.h
-        include/rdk/stl/Vector.h
         include/rdk/string/StringUtilities.h
         include/rdk/support/Support.h
-        include/rdk/util/ICallbackProvider.h
-        include/rdk/util/AsyncExecutor.h
-        include/rdk/util/Callback.h
         include/rdk/util/Subscription.h
         include/rdk/util/Result.h
         include/rdk/util/SubscriberList.h
         include/rdk/util/CountedGuard.h
-        include/rdk/util/TaskScheduler.h
         include/rdk/util/ScopedRollback.h
         include/rdk/util/Leak.h
         include/rdk/util/ClassId.h
         include/rdk/detail/NonCopyable.h
+        include/rdk/detail/NonMoveable.h
         include/rdk/events/ValuePublisher.h
 
         # source/

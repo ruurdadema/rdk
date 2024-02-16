@@ -63,14 +63,16 @@ public:
     /**
      * Calls all subscribers by calling back the given callback with each subscriber.
      * @param cb The function to call.
+     * @param excluding If given, this subscriber will not be called.
      */
-    void call (const std::function<void (Type&)>& cb) const
+    void call (const std::function<void (Type&)>& cb, Type* excluding = nullptr) const
     {
         if (!cb)
             return;
 
         for (auto& s : *mSubscribers)
-            cb (*s.subscriber);
+            if (s.subscriber != excluding)
+                cb (*s.subscriber);
     }
 
     /**

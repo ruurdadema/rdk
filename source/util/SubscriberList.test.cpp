@@ -34,7 +34,7 @@ private:
     std::function<void()> mFunction;
 };
 
-TEST_CASE ("", "[SharedSubscriberList]")
+TEST_CASE ("SubscriberList", "[SharedSubscriberList]")
 {
     rdk::SubscriberList<LambdaSubscriber> subscribers;
 
@@ -135,9 +135,20 @@ TEST_CASE ("", "[SharedSubscriberList]")
         REQUIRE (callbacks == std::vector<std::string> { "subscriberA", "subscriberB", "subscriberA", "subscriberB" });
     }
 
+    SECTION ("Callback excluding subscriber")
+    {
+        subscribers.call (
+            [] (LambdaSubscriber& s) {
+                s.callback();
+            },
+            &subscriberA);
+
+        REQUIRE (callbacks == std::vector<std::string> { "subscriberB" });
+    }
+
     subscriberA.unsubscribe();
     REQUIRE (subscribers.getNumSubscribers() == 1);
-    REQUIRE (subscribers.hasSubscriber(&subscriberA) == false);
+    REQUIRE (subscribers.hasSubscriber (&subscriberA) == false);
 
     subscriberB.unsubscribe();
     REQUIRE (subscribers.getNumSubscribers() == 0);

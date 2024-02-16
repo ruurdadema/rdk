@@ -8,10 +8,6 @@
 #include <numeric>
 #include <type_traits>
 
-
-
-
-
 namespace rdk
 {
 

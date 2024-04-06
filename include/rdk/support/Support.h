@@ -27,7 +27,7 @@ T& getGlobalInstanceOfType()
  * one of these objects present per instantiated type, per process.
  */
 template <typename T>
-const T& getGlobalConstInstanceForType()
+const T& getGlobalConstInstanceOfType()
 {
     const static T _defaultObject;
     return _defaultObject;

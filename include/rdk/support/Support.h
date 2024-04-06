@@ -16,7 +16,7 @@ namespace rdk
  * one of these objects present per instantiated type, per process.
  */
 template <typename T>
-T& getGlobalInstanceForType()
+T& getGlobalInstanceOfType()
 {
     static T _defaultObject;
     return _defaultObject;

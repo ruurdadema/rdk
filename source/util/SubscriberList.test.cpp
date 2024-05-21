@@ -15,7 +15,7 @@ public:
 
     void subscribeToSubscriberList (rdk::SubscriberList<LambdaSubscriber>& list)
     {
-        mSubscription = list.subscribe (this);
+        mSubscription = list.add (this);
     }
 
     void unsubscribe()

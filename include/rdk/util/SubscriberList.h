@@ -35,7 +35,7 @@ public:
      * @param subscriber Subscriber to add.
      * @return A subscription which will unsubscribe on destruction.
      */
-    rdk::Subscription subscribe (Type* subscriber)
+    rdk::Subscription add (Type* subscriber)
     {
         if (subscriber == nullptr)
             return {};

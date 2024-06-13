@@ -5,7 +5,8 @@
 
 #pragma once
 
-#include "rdk/support/Support.h"
+#include "rdk/detail/NonCopyable.h"
+#include "rdk/detail/NonMoveable.h"
 
 namespace rdk
 {

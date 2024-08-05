@@ -6,7 +6,6 @@
 #pragma once
 
 #include <algorithm>
-#include <memory>
 
 #include "Subscription.h"
 #include "rdk/detail/NonCopyable.h"

@@ -19,15 +19,13 @@ target_sources(rdk INTERFACE
         include/rdk/detail/NonCopyable.h
         include/rdk/detail/NonMoveable.h
 
-        # source/
-        source/util/StringUtilities.cpp
-
         # lib/
         lib/natsort/strnatcmp.h
         lib/natsort/strnatcmp.c
 )
 
 target_include_directories(rdk INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(rdk INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 # Unit tests
 

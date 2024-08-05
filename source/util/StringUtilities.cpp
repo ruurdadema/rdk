@@ -3,14 +3,14 @@
 // Copyright (c) Owllab. All rights reserved.
 //
 
-#include <rdk/string/StringUtilities.h>
+#include "rdk/util/StringUtilities.h"
 
 #include <algorithm>
 #include <limits>
 #include <string>
 
 extern "C" {
-#include "../lib/natsort/strnatcmp.h"
+#include "../../lib/natsort/strnatcmp.h"
 }
 
 bool rdk::starts_with(const std::string_view text, const std::string_view start) {

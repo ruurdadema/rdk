@@ -3,7 +3,7 @@
 // Copyright (c) Owllab. All rights reserved.
 //
 
-#include <rdk/string/StringUtilities.h>
+#include <rdk/util/StringUtilities.h>
 
 #include <catch2/catch.hpp>
 

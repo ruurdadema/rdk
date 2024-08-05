@@ -32,7 +32,7 @@ class ScopedAtomicCounter {
         atomic_.fetch_add(-1);
     }
 
-    [[nodiscard]] Type previousValue() const {
+    [[nodiscard]] Type previous_value() const {
         return previous_value_;
     }
 

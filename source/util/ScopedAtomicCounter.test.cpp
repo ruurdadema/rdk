@@ -12,12 +12,12 @@ TEST_CASE("Previous value", "[ScopedAtomicCounter]") {
 
     {
         const ScopedAtomicCounter a(atomic);
-        REQUIRE(a.previousValue() == 0);
+        REQUIRE(a.previous_value() == 0);
 
         REQUIRE(atomic.load() == 1);
 
         const ScopedAtomicCounter b(atomic);
-        REQUIRE(b.previousValue() == 1);
+        REQUIRE(b.previous_value() == 1);
     }
     REQUIRE(atomic.load() == 0);
 }
@@ -31,7 +31,7 @@ TEST_CASE("Copy constructor", "[ScopedAtomicCounter]") {
         REQUIRE(atomic.load() == 1);
         {
             const ScopedAtomicCounter b(a);
-            REQUIRE(b.previousValue() == 1);
+            REQUIRE(b.previous_value() == 1);
 
             REQUIRE(atomic.load() == 2);
         }
@@ -49,7 +49,7 @@ TEST_CASE("Copy assignment", "[ScopedAtomicCounter]") {
         REQUIRE(atomic.load() == 1);
         {
             const ScopedAtomicCounter b = a;
-            REQUIRE(b.previousValue() == 1);
+            REQUIRE(b.previous_value() == 1);
 
             REQUIRE(atomic.load() == 2);
         }
@@ -67,7 +67,7 @@ TEST_CASE("Copy assignment lambda", "[ScopedAtomicCounter]") {
 
         {
             auto func = [b = a, &atomic] {
-                REQUIRE(b.previousValue() == 1);
+                REQUIRE(b.previous_value() == 1);
                 REQUIRE(atomic.load() == 2);
             };
 
@@ -89,7 +89,7 @@ TEST_CASE("Copy construction lambda", "[ScopedAtomicCounter]") {
 
         {
             auto func = [b(a), &atomic]() {
-                REQUIRE(b.previousValue() == 1);
+                REQUIRE(b.previous_value() == 1);
                 REQUIRE(atomic.load() == 2);
             };
 

@@ -23,7 +23,7 @@ class CountedGuard: NonCopyable {
       public:
         ScopedGuard() = delete;
 
-        explicit ScopedGuard(CountedGuard& guardCounter) : guard_counter_(&guardCounter) {
+        explicit ScopedGuard(CountedGuard& guard_counter) : guard_counter_(&guard_counter) {
             guard_counter_->counted_value_++;
         }
 
@@ -36,9 +36,11 @@ class CountedGuard: NonCopyable {
         }
 
         virtual ~ScopedGuard() {
-            if (guard_counter_ && --guard_counter_->counted_value_ == 0)
-                if (guard_counter_->on_release)
+            if (guard_counter_ && --guard_counter_->counted_value_ == 0) {
+                if (guard_counter_->on_release) {
                     guard_counter_->on_release();
+                }
+            }
         }
 
         ScopedGuard& operator=(const ScopedGuard& other) {

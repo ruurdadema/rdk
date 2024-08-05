@@ -9,8 +9,8 @@
 
 TEST_CASE("ScopedGuard default constructor", "[ScopedGuard]") {
     rdk::CountedGuard counter {};
-    int numberOfTimesOnReleaseCalled = 0;
-    counter.on_release = [&] { numberOfTimesOnReleaseCalled++; };
+    int number_of_times_on_release_called = 0;
+    counter.on_release = [&] { number_of_times_on_release_called++; };
 
     {
         const auto a = counter.get_guard();
@@ -20,7 +20,7 @@ TEST_CASE("ScopedGuard default constructor", "[ScopedGuard]") {
         REQUIRE(counter.get_count() == 2);
     }
     REQUIRE(counter.get_count() == 0);
-    REQUIRE(numberOfTimesOnReleaseCalled == 1);
+    REQUIRE(number_of_times_on_release_called == 1);
 }
 
 TEST_CASE("ScopedGuard copy constructor", "[ScopedGuard]") {

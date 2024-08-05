@@ -36,7 +36,7 @@ option(RDK_WITH_UNIT_TESTS "Enable RDK unit tests" ON)
 if (RDK_WITH_UNIT_TESTS)
     add_subdirectory(submodules/Catch2)
 
-    file(GLOB_RECURSE TEST_SOURCES source/*.test.cpp)
+    file(GLOB_RECURSE TEST_SOURCES test/*.test.cpp)
 
     add_executable(RdkTests ${TEST_SOURCES})
 

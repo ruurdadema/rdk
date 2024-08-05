@@ -14,13 +14,10 @@ target_sources(rdk INTERFACE
         include/rdk/util/Subscription.h
         include/rdk/util/Result.h
         include/rdk/util/SubscriberList.h
-        include/rdk/util/CountedGuard.h
         include/rdk/util/ScopedRollback.h
         include/rdk/util/Leak.h
-        include/rdk/util/ClassId.h
         include/rdk/detail/NonCopyable.h
         include/rdk/detail/NonMoveable.h
-        include/rdk/events/ValuePublisher.h
 
         # source/
         source/string/StringUtilities.cpp

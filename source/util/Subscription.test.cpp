@@ -5,7 +5,7 @@
 
 #include "rdk/util/Subscription.h"
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 
 TEST_CASE("Count destruction callbacks", "[Subscription]") {
     int count = 0;

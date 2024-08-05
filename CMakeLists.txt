@@ -34,13 +34,11 @@ target_include_directories(rdk INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 option(RDK_WITH_UNIT_TESTS "Enable RDK unit tests" ON)
 
 if (RDK_WITH_UNIT_TESTS)
+    add_subdirectory(submodules/Catch2)
+
     file(GLOB_RECURSE TEST_SOURCES source/*.test.cpp)
 
-    add_executable(RdkTests
-            source/test/CatchMain.cpp
-            ${TEST_SOURCES}
-    )
-    target_include_directories(RdkTests PRIVATE lib)
-    target_compile_definitions(RdkTests PUBLIC CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS=1)
-    target_link_libraries(RdkTests PUBLIC rdk)
+    add_executable(RdkTests ${TEST_SOURCES})
+
+    target_link_libraries(RdkTests PUBLIC rdk Catch2WithMain)
 endif ()

@@ -5,7 +5,7 @@
 
 #include <rdk/util/StringUtilities.h>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 
 TEST_CASE("Test upToFirstOccurrenceOf", "[StringUtilities]") {
     constexpr std::string_view haystack("one test two test three test");

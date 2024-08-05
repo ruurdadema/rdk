@@ -5,7 +5,7 @@
 
 #include "rdk/util/SubscriberList.h"
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <utility>
 
 class LambdaSubscriber {

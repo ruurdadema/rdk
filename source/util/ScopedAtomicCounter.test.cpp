@@ -5,7 +5,7 @@
 
 #include "rdk/util/ScopedAtomicCounter.h"
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 
 TEST_CASE("Previous value", "[ScopedAtomicCounter]") {
     std::atomic<int> atomic {};

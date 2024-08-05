@@ -163,7 +163,7 @@ bool string_contains(std::string_view string, char c);
  * @param string String to put inside the vector.
  * @return Vector containing the string.
  */
-static std::vector<uint8_t> to_vector(std::string_view string) {
+[[maybe_unused]] static std::vector<uint8_t> to_vector(std::string_view string) {
     return {string.begin(), string.end()};
 }
 

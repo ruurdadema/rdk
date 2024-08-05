@@ -23,7 +23,7 @@ public:
     template <class... Args>
     explicit Leak (Args&&... args)
     {
-        mInstance = new T (std::forward<Args> (args)...);
+        instance_ = new T (std::forward<Args> (args)...);
     }
 
     /**
@@ -31,11 +31,11 @@ public:
      */
     T* get()
     {
-        return mInstance;
+        return instance_;
     }
 
 private:
-    T* mInstance { nullptr };
+    T* instance_ { nullptr };
 };
 
 } // namespace rdk

@@ -3,190 +3,171 @@
 // Copyright (c) Owllab. All rights reserved.
 //
 
-#include "catch2/catch.hpp"
-
 #include "rdk/util/CountedGuard.h"
 
-TEST_CASE ("ScopedGuard default constructor", "[ScopedGuard]")
-{
+#include "catch2/catch.hpp"
+
+TEST_CASE("ScopedGuard default constructor", "[ScopedGuard]") {
     rdk::CountedGuard counter {};
     int numberOfTimesOnReleaseCalled = 0;
-    counter.onRelease = [&] {
-        numberOfTimesOnReleaseCalled++;
-    };
+    counter.on_release = [&] { numberOfTimesOnReleaseCalled++; };
 
     {
-        auto a = counter.getGuard();
-        REQUIRE (counter.getCount() == 1);
+        const auto a = counter.get_guard();
+        REQUIRE(counter.get_count() == 1);
 
-        auto b = a; // NOLINT
-        REQUIRE (counter.getCount() == 2);
+        auto b = a;  // NOLINT
+        REQUIRE(counter.get_count() == 2);
     }
-    REQUIRE (counter.getCount() == 0);
-    REQUIRE (numberOfTimesOnReleaseCalled == 1);
+    REQUIRE(counter.get_count() == 0);
+    REQUIRE(numberOfTimesOnReleaseCalled == 1);
 }
 
-TEST_CASE ("ScopedGuard copy constructor", "[ScopedGuard]")
-{
+TEST_CASE("ScopedGuard copy constructor", "[ScopedGuard]") {
     rdk::CountedGuard counter {};
 
     {
-        auto a = counter.getGuard();
+        const auto a = counter.get_guard();
 
-        REQUIRE (counter.getCount() == 1);
+        REQUIRE(counter.get_count() == 1);
         {
-            auto b = a; // NOLINT
-            REQUIRE (counter.getCount() == 2);
+            auto b = a;  // NOLINT
+            REQUIRE(counter.get_count() == 2);
         }
-        REQUIRE (counter.getCount() == 1);
+        REQUIRE(counter.get_count() == 1);
     }
-    REQUIRE (counter.getCount() == 0);
+    REQUIRE(counter.get_count() == 0);
 }
 
-TEST_CASE ("ScopedGuard move constructor", "[ScopedGuard]")
-{
+TEST_CASE("ScopedGuard move constructor", "[ScopedGuard]") {
     rdk::CountedGuard counter {};
 
     {
-        auto a = counter.getGuard();
+        auto a = counter.get_guard();
 
-        REQUIRE (counter.getCount() == 1);
+        REQUIRE(counter.get_count() == 1);
         {
-            auto b = std::move (a);
-            REQUIRE (counter.getCount() == 1);
+            auto b = std::move(a);
+            REQUIRE(counter.get_count() == 1);
         }
 
-        REQUIRE (counter.getCount() == 0); // a moved to b, which makes the scope of b decrease the count already.
+        REQUIRE(counter.get_count() == 0);  // a moved to b, which makes the scope of b decrease the count already.
     }
-    REQUIRE (counter.getCount() == 0);
+    REQUIRE(counter.get_count() == 0);
 }
 
-TEST_CASE ("ScopedGuard move constructor with lambda", "[ScopedGuard]")
-{
+TEST_CASE("ScopedGuard move constructor with lambda", "[ScopedGuard]") {
     rdk::CountedGuard counter {};
 
     {
-        auto a = counter.getGuard();
+        auto a = counter.get_guard();
 
-        REQUIRE (counter.getCount() == 1);
+        REQUIRE(counter.get_count() == 1);
         {
-            auto func = [&, b { std::move (a) }]() {
-                REQUIRE (counter.getCount() == 1);
-            };
+            auto func = [&, b {std::move(a)}]() { REQUIRE(counter.get_count() == 1); };
             func();
 
-            REQUIRE (counter.getCount() == 1);
+            REQUIRE(counter.get_count() == 1);
         }
-        REQUIRE (counter.getCount() == 0);
+        REQUIRE(counter.get_count() == 0);
     }
-    REQUIRE (counter.getCount() == 0);
+    REQUIRE(counter.get_count() == 0);
 }
 
-TEST_CASE ("ScopedGuard move assignment", "[ScopedGuard]")
-{
+TEST_CASE("ScopedGuard move assignment", "[ScopedGuard]") {
     rdk::CountedGuard counter {};
 
     {
-        auto a = counter.getGuard();
+        auto a = counter.get_guard();
 
-        REQUIRE (counter.getCount() == 1);
+        REQUIRE(counter.get_count() == 1);
         {
-            auto b = counter.getGuard();
-            REQUIRE (counter.getCount() == 2);
+            auto b = counter.get_guard();
+            REQUIRE(counter.get_count() == 2);
 
-            b = std::move (a);
-            REQUIRE (counter.getCount() == 1);
+            b = std::move(a);
+            REQUIRE(counter.get_count() == 1);
         }
-        REQUIRE (counter.getCount() == 0);
+        REQUIRE(counter.get_count() == 0);
     }
 
-    REQUIRE (counter.getCount() == 0);
+    REQUIRE(counter.get_count() == 0);
 }
 
-TEST_CASE ("ScopedGuard move assignment with lambda", "[ScopedGuard]")
-{
+TEST_CASE("ScopedGuard move assignment with lambda", "[ScopedGuard]") {
     rdk::CountedGuard counter {};
 
     {
-        auto a = counter.getGuard();
+        auto a = counter.get_guard();
 
-        REQUIRE (counter.getCount() == 1);
+        REQUIRE(counter.get_count() == 1);
         {
-            auto func = [&, b = std::move (a)]() {
-                REQUIRE (counter.getCount() == 1);
-            };
+            auto func = [&, b = std::move(a)]() { REQUIRE(counter.get_count() == 1); };
 
             func();
 
-            REQUIRE (counter.getCount() == 1);
+            REQUIRE(counter.get_count() == 1);
         }
-        REQUIRE (counter.getCount() == 0);
+        REQUIRE(counter.get_count() == 0);
     }
 
-    REQUIRE (counter.getCount() == 0);
+    REQUIRE(counter.get_count() == 0);
 }
 
-TEST_CASE ("ScopedGuard copy assignment", "[ScopedGuard]")
-{
+TEST_CASE("ScopedGuard copy assignment", "[ScopedGuard]") {
     rdk::CountedGuard counter {};
 
     {
-        auto a = counter.getGuard();
+        auto a = counter.get_guard();
 
-        REQUIRE (counter.getCount() == 1);
+        REQUIRE(counter.get_count() == 1);
         {
-            auto b = a; // NOLINT
+            auto b = a;  // NOLINT
 
-            REQUIRE (counter.getCount() == 2);
+            REQUIRE(counter.get_count() == 2);
         }
-        REQUIRE (counter.getCount() == 1);
+        REQUIRE(counter.get_count() == 1);
     }
-    REQUIRE (counter.getCount() == 0);
+    REQUIRE(counter.get_count() == 0);
 }
 
-TEST_CASE ("ScopedGuard copy assignment lambda", "[ScopedGuard]")
-{
+TEST_CASE("ScopedGuard copy assignment lambda", "[ScopedGuard]") {
     rdk::CountedGuard counter {};
 
     {
-        auto a = counter.getGuard();
+        auto a = counter.get_guard();
 
-        REQUIRE (counter.getCount() == 1);
+        REQUIRE(counter.get_count() == 1);
 
         {
-            auto func = [&, b = a]() {
-                REQUIRE (counter.getCount() == 2);
-            };
+            auto func = [&, b = a]() { REQUIRE(counter.get_count() == 2); };
 
             func();
 
-            REQUIRE (counter.getCount() == 2);
+            REQUIRE(counter.get_count() == 2);
         }
-        REQUIRE (counter.getCount() == 1);
+        REQUIRE(counter.get_count() == 1);
     }
-    REQUIRE (counter.getCount() == 0);
+    REQUIRE(counter.get_count() == 0);
 }
 
-TEST_CASE ("ScopedGuard copy construction lambda", "[ScopedGuard]")
-{
+TEST_CASE("ScopedGuard copy construction lambda", "[ScopedGuard]") {
     rdk::CountedGuard counter {};
 
     {
-        auto a = counter.getGuard();
+        auto a = counter.get_guard();
 
-        REQUIRE (counter.getCount() == 1);
+        REQUIRE(counter.get_count() == 1);
 
         {
-            auto func = [&, b (a)]() {
-                REQUIRE (counter.getCount() == 2);
-            };
+            auto func = [&, b(a)]() { REQUIRE(counter.get_count() == 2); };
 
             func();
 
-            REQUIRE (counter.getCount() == 2);
+            REQUIRE(counter.get_count() == 2);
         }
 
-        REQUIRE (counter.getCount() == 1);
+        REQUIRE(counter.get_count() == 1);
     }
-    REQUIRE (counter.getCount() == 0);
+    REQUIRE(counter.get_count() == 0);
 }

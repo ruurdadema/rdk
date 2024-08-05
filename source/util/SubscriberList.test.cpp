@@ -3,153 +3,118 @@
 // Copyright (c) 2024 Sound on Digital. All rights reserved.
 //
 
+#include "rdk/util/SubscriberList.h"
+
 #include <catch2/catch.hpp>
 #include <utility>
 
-#include "rdk/util/SubscriberList.h"
+class LambdaSubscriber {
+  public:
+    explicit LambdaSubscriber(std::function<void()> func) : function_(std::move(func)) {}
 
-class LambdaSubscriber
-{
-public:
-    explicit LambdaSubscriber (std::function<void()> func) : mFunction (std::move (func)) {}
-
-    void subscribeToSubscriberList (rdk::SubscriberList<LambdaSubscriber>& list)
-    {
-        mSubscription = list.add (this);
+    void subscribe_to_subscriber_list(rdk::SubscriberList<LambdaSubscriber>& list) {
+        subscription_ = list.add(this);
     }
 
-    void unsubscribe()
-    {
-        mSubscription.reset();
+    void unsubscribe() {
+        subscription_.reset();
     }
 
-    void callback()
-    {
-        if (mFunction)
-            mFunction();
+    void callback() const {
+        if (function_) {
+            function_();
+        }
     }
 
-private:
-    rdk::Subscription mSubscription;
-    std::function<void()> mFunction;
+  private:
+    rdk::Subscription subscription_;
+    std::function<void()> function_;
 };
 
-TEST_CASE ("SubscriberList", "[SharedSubscriberList]")
-{
+namespace {
+constexpr auto kSubscriberA = "subscriberA";
+constexpr auto kSubscriberB = "subscriberB";
+constexpr auto kSubscriberC = "subscriberC";
+}
+
+TEST_CASE("SubscriberList", "[SharedSubscriberList]") {
     rdk::SubscriberList<LambdaSubscriber> subscribers;
 
     std::vector<std::string> callbacks;
 
-    LambdaSubscriber subscriberA ([&]() {
-        callbacks.emplace_back ("subscriberA");
-    });
+    LambdaSubscriber subscriberA([&] { callbacks.emplace_back(kSubscriberA); });
+    LambdaSubscriber subscriberB([&] { callbacks.emplace_back(kSubscriberB); });
 
-    LambdaSubscriber subscriberB ([&]() {
-        callbacks.emplace_back ("subscriberB");
-    });
+    REQUIRE(subscribers.get_num_subscribers() == 0);
 
-    REQUIRE (subscribers.getNumSubscribers() == 0);
-
-    SECTION ("Test unsubscribing")
-    {
+    SECTION("Test unsubscribing") {
         {
-            LambdaSubscriber subscriberC ([&]() {
-                callbacks.emplace_back ("subscriberC");
-            });
+            LambdaSubscriber subscriberC([&] { callbacks.emplace_back(kSubscriberC); });
 
-            subscriberC.subscribeToSubscriberList (subscribers);
+            subscriberC.subscribe_to_subscriber_list(subscribers);
 
-            subscribers.call ([] (LambdaSubscriber& s) {
-                s.callback();
-            });
+            subscribers.call([](const LambdaSubscriber& s) { s.callback(); });
 
-            REQUIRE (callbacks == std::vector<std::string> { "subscriberC" });
+            REQUIRE(callbacks == std::vector<std::string> {kSubscriberC});
         }
 
         // At this point subscriberC has been unsubscribed
 
-        subscribers.call ([] (LambdaSubscriber& s) {
-            s.callback();
-        });
+        subscribers.call([](const LambdaSubscriber& s) { s.callback(); });
 
-        REQUIRE (callbacks == std::vector<std::string> { "subscriberC" });
-        REQUIRE (subscribers.getNumSubscribers() == 0);
+        REQUIRE(callbacks == std::vector<std::string> {kSubscriberC});
+        REQUIRE(subscribers.get_num_subscribers() == 0);
     }
 
-    SECTION ("Test double subscribing")
-    {
+    SECTION("Test double subscribing") {
         {
-            LambdaSubscriber subscriberC ([&]() {
-                callbacks.emplace_back ("subscriberC");
-            });
+            LambdaSubscriber subscriberC([&]() { callbacks.emplace_back(kSubscriberC); });
 
-            subscriberC.subscribeToSubscriberList (subscribers);
-            subscriberC.subscribeToSubscriberList (subscribers);
+            subscriberC.subscribe_to_subscriber_list(subscribers);
+            subscriberC.subscribe_to_subscriber_list(subscribers); // This should do nothing
 
-            subscribers.call ([] (LambdaSubscriber& s) {
-                s.callback();
-            });
+            subscribers.call([](const LambdaSubscriber& s) { s.callback(); });
 
-            REQUIRE (callbacks == std::vector<std::string> { "subscriberC" });
-            REQUIRE (subscribers.getNumSubscribers() == 1);
+            // Only one callback should be called
+            REQUIRE(callbacks == std::vector<std::string> {kSubscriberC});
+            REQUIRE(subscribers.get_num_subscribers() == 1);
         }
-        REQUIRE (subscribers.getNumSubscribers() == 0);
+        REQUIRE(subscribers.get_num_subscribers() == 0);
     }
 
-    subscriberA.subscribeToSubscriberList (subscribers);
-    REQUIRE (subscribers.hasSubscriber (&subscriberA));
-    REQUIRE (subscribers.getNumSubscribers() == 1);
+    subscriberA.subscribe_to_subscriber_list(subscribers);
+    REQUIRE(subscribers.has_subscriber(&subscriberA));
+    REQUIRE(subscribers.get_num_subscribers() == 1);
 
-    SECTION ("Callback once")
-    {
-        subscribers.call ([] (LambdaSubscriber& s) {
-            s.callback();
-        });
-
-        REQUIRE (callbacks == std::vector<std::string> { "subscriberA" });
+    SECTION("Callback once") {
+        subscribers.call([](const LambdaSubscriber& s) { s.callback(); });
+        REQUIRE(callbacks == std::vector<std::string> {kSubscriberA});
     }
 
-    subscriberB.subscribeToSubscriberList (subscribers);
-    REQUIRE (subscribers.hasSubscriber (&subscriberB));
-    REQUIRE (subscribers.getNumSubscribers() == 2);
+    subscriberB.subscribe_to_subscriber_list(subscribers);
+    REQUIRE(subscribers.has_subscriber(&subscriberB));
+    REQUIRE(subscribers.get_num_subscribers() == 2);
 
-    SECTION ("Callback once with both subscribers")
-    {
-        subscribers.call ([] (LambdaSubscriber& s) {
-            s.callback();
-        });
-
-        REQUIRE (callbacks == std::vector<std::string> { "subscriberA", "subscriberB" });
+    SECTION("Callback once with both subscribers") {
+        subscribers.call([](const LambdaSubscriber& s) { s.callback(); });
+        REQUIRE(callbacks == std::vector<std::string> {kSubscriberA, kSubscriberB});
     }
 
-    SECTION ("Callback twice with both subscribers")
-    {
-        subscribers.call ([] (LambdaSubscriber& s) {
-            s.callback();
-        });
-
-        subscribers.call ([] (LambdaSubscriber& s) {
-            s.callback();
-        });
-
-        REQUIRE (callbacks == std::vector<std::string> { "subscriberA", "subscriberB", "subscriberA", "subscriberB" });
+    SECTION("Callback twice with both subscribers") {
+        subscribers.call([](const LambdaSubscriber& s) { s.callback(); });
+        subscribers.call([](const LambdaSubscriber& s) { s.callback(); });
+        REQUIRE(callbacks == std::vector<std::string> {kSubscriberA, kSubscriberB, kSubscriberA, kSubscriberB});
     }
 
-    SECTION ("Callback excluding subscriber")
-    {
-        subscribers.call (
-            [] (LambdaSubscriber& s) {
-                s.callback();
-            },
-            &subscriberA);
-
-        REQUIRE (callbacks == std::vector<std::string> { "subscriberB" });
+    SECTION("Callback excluding subscriber") {
+        subscribers.call([](const LambdaSubscriber& s) { s.callback(); }, &subscriberA);
+        REQUIRE(callbacks == std::vector<std::string> {kSubscriberB});
     }
 
     subscriberA.unsubscribe();
-    REQUIRE (subscribers.getNumSubscribers() == 1);
-    REQUIRE (subscribers.hasSubscriber (&subscriberA) == false);
+    REQUIRE(subscribers.get_num_subscribers() == 1);
+    REQUIRE(subscribers.has_subscriber(&subscriberA) == false);
 
     subscriberB.unsubscribe();
-    REQUIRE (subscribers.getNumSubscribers() == 0);
+    REQUIRE(subscribers.get_num_subscribers() == 0);
 }

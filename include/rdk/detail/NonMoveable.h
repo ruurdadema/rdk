@@ -6,24 +6,26 @@
 #pragma once
 
 /**
- * Shortcut for declaring a class non moveable.
+ * Shortcut for declaring a class non-moveable.
  */
-#define RDK_DECLARE_NON_MOVEABLE(className)                                                                            \
-    className (className&&) = delete;                                                                                  \
-    className& operator= (className&&) = delete;
+#define RDK_DECLARE_NON_MOVEABLE(className) \
+    className(className&&) = delete; \
+    className& operator=(className&&) = delete;
 
-namespace rdk
-{
+namespace rdk {
 
-class NonMoveable
-{
-public:
-    NonMoveable (NonMoveable&&) noexcept = delete;
-    const NonMoveable& operator= (NonMoveable&&) noexcept = delete;
+/**
+ * Class which prevents subclasses from being moved.
+ * Inherit from this class to make a class non-moveable.
+ */
+class NonMoveable {
+  public:
+    NonMoveable(NonMoveable&&) noexcept = delete;
+    const NonMoveable& operator=(NonMoveable&&) noexcept = delete;
 
-protected:
+  protected:
     NonMoveable() = default;
     ~NonMoveable() = default;
 };
 
-} // namespace rdk
+}  // namespace rdk

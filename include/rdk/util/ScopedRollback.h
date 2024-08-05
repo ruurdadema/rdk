@@ -23,11 +23,11 @@ public:
 
     /**
      * Constructor.
-     * @param initialFunctionToRollback Function to execute on rollback.
+     * @param initial_rollback_function Function to execute on rollback.
      */
-    explicit ScopedRollback (std::function<void()>&& initialFunctionToRollback)
+    explicit ScopedRollback (std::function<void()>&& initial_rollback_function)
     {
-        mRollbackFunctions.push_back (std::move (initialFunctionToRollback));
+        rollback_functions_.push_back (std::move (initial_rollback_function));
     }
 
     /**
@@ -35,9 +35,11 @@ public:
      */
     ~ScopedRollback()
     {
-        for (auto& func : mRollbackFunctions)
-            if (func)
+        for (auto& func : rollback_functions_) {
+            if (func) {
                 func();
+            }
+        }
     }
 
     ScopedRollback (const ScopedRollback&) = delete;
@@ -49,7 +51,7 @@ public:
      */
     void add (std::function<void()>&& functionToRollback)
     {
-        mRollbackFunctions.push_back (std::move (functionToRollback));
+        rollback_functions_.push_back (std::move (functionToRollback));
     }
 
     /**
@@ -58,11 +60,11 @@ public:
      */
     void cancel()
     {
-        mRollbackFunctions.clear();
+        rollback_functions_.clear();
     }
 
 private:
-    std::vector<std::function<void()>> mRollbackFunctions;
+    std::vector<std::function<void()>> rollback_functions_;
 };
 
 } // namespace rdk

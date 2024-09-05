@@ -11,6 +11,8 @@
 #include "rdk/detail/NonCopyable.h"
 #include "rdk/detail/NonMoveable.h"
 
+#include <memory>
+
 namespace rdk {
 
 /**

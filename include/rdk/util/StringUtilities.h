@@ -10,6 +10,7 @@
 #include <optional>
 #include <string_view>
 #include <vector>
+#include <algorithm>
 
 extern "C" {
 #include "natsort/strnatcmp.h"

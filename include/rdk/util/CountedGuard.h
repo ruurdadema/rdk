@@ -7,14 +7,12 @@
 
 #include <functional>
 
-#include "rdk/detail/NonCopyable.h"
-
 namespace rdk {
 
 /**
  * Class which holds a counter and optionally a function which gets called when the counter drops to 0.
  */
-class CountedGuard: NonCopyable {
+class CountedGuard {
   public:
     /**
      * Takes a reference to a CountedGuard and maintains its internal counter based on the scope of this class.
@@ -65,6 +63,15 @@ class CountedGuard: NonCopyable {
 
     /// Called then the guard counter drops to zero.
     std::function<void()> on_release;
+
+    CountedGuard() = default;
+    ~CountedGuard() = default;
+
+    CountedGuard(const ScopedGuard&) = delete;
+    CountedGuard& operator=(const ScopedGuard&) = delete;
+
+    CountedGuard(ScopedGuard&&) = delete;
+    CountedGuard& operator=(ScopedGuard&&) = delete;
 
     /**
      * Increases the counter by one, and returns a ScopedGuard which will decrease the counter by one upon destruction

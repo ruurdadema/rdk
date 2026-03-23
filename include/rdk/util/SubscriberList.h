@@ -9,8 +9,6 @@
 #include <memory>
 
 #include "Subscription.h"
-#include "rdk/detail/NonCopyable.h"
-#include "rdk/detail/NonMoveable.h"
 
 namespace rdk {
 
@@ -24,8 +22,11 @@ class SubscriberList {
   public:
     SubscriberList() = default;
 
-    RDK_DECLARE_NON_COPYABLE(SubscriberList)
-    RDK_DECLARE_NON_MOVEABLE(SubscriberList)
+    SubscriberList(const SubscriberList&) = delete;
+    SubscriberList& operator=(const SubscriberList&) = delete;
+
+    SubscriberList(SubscriberList&&) = delete;
+    SubscriberList& operator=(SubscriberList&&) = delete;
 
     /**
      * Adds given subscriber to the list.

@@ -23,8 +23,7 @@ class Subscription {
     }
 
     ~Subscription() {
-        if (on_destruction_callback_)
-            on_destruction_callback_();
+        reset();
     }
 
     explicit operator bool() const {
@@ -46,12 +45,9 @@ class Subscription {
         return *this;
     }
 
-    Subscription& operator=(std::function<void()>&& onDestructionCallback) noexcept {
-        if (on_destruction_callback_)
-            on_destruction_callback_();
-
+    Subscription& operator=(std::function<void()> onDestructionCallback) noexcept {
+        reset();
         on_destruction_callback_ = std::move(onDestructionCallback);
-
         return *this;
     }
 
@@ -66,7 +62,7 @@ class Subscription {
      * Clears the destruction callback without invoking it.
      * Warning! This basically negates the point of this class, you should probably rarely use it, if ever.
      */
-    void neutralize() {
+    void release() {
         on_destruction_callback_ = nullptr;
     }
 

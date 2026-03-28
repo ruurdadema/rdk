@@ -10,7 +10,6 @@ add_library(rdk INTERFACE)
 target_sources(rdk INTERFACE
         # include/
         include/rdk/util/Subscription.h
-        include/rdk/util/Result.h
         include/rdk/util/SubscriberList.h
 
         # lib/
